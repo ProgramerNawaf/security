@@ -1,9 +1,6 @@
 package com.example.spring_day1.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,6 +26,9 @@ public class MyUser implements UserDetails {
     private String username;
     private String password;
     private String role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
+    @PrimaryKeyJoinColumn
+    private Set<Todo> todos;
 
 
     @Override

@@ -2,6 +2,7 @@ package com.example.spring_day1.Service;
 
 import com.example.spring_day1.ApiException.ApiException;
 import com.example.spring_day1.Model.Todo;
+import com.example.spring_day1.Repository.AuthRepository;
 import com.example.spring_day1.Repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,13 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final AuthRepository authRepository;
     public List<Todo> getTodos(Integer userId) {
         return todoRepository.findTodosByUserId(userId);
     }
 
     public void addTodo(Integer userId, Todo todo) {
-        todo.setUserId(userId);
+        todo.setUser(authRepository.findMyUsersById(userId));
         todoRepository.save(todo);
     }
 
@@ -29,7 +31,7 @@ public class TodoService {
             throw new ApiException("Todo Not found");
         }
 
-        if (!(userId.equals(oldTodo.getUserId()))){
+        if (!(userId.equals(oldTodo.getUser().getId()))){
            throw new ApiException("Not Authorised");
         }
         oldTodo.setMessage(todo.getMessage());
@@ -44,7 +46,7 @@ public class TodoService {
             throw new ApiException("Todo Not found");
         }
 
-        if (!(userId.equals(todo.getUserId()))){
+        if (!(userId.equals(todo.getUser().getId()))){
             throw new ApiException("Not Authorised");
         }
             todoRepository.delete(todo);

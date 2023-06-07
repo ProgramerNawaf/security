@@ -1,9 +1,7 @@
 package com.example.spring_day1.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +20,8 @@ public class Todo {
 
     private String message;
 
-    private Integer userId;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private MyUser user;
 }
