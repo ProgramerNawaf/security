@@ -2,6 +2,7 @@ package com.example.springsecurityy.Model;
 
 import com.example.springsecurityy.Service.MyUserDetailsService;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,16 @@ public class MyUser implements UserDetails {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
+    @NotNull(message = "username cant be null!")
     private String username;
+    @NotNull(message = "password cant be null!")
     private String password;
+    @Column(columnDefinition = "varchar(25) not null check (role='ADMIN' or role='CUSTOMER')")
+    @NotNull(message = "role cant be null!")
     private String role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH)
     @PrimaryKeyJoinColumn
-    private Set<Blog> blogs;
+    private Set<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

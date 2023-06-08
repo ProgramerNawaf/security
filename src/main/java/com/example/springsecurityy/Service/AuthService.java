@@ -20,7 +20,7 @@ public class AuthService {
     public void register(MyUser usr){
         String hash = new BCryptPasswordEncoder().encode(usr.getPassword());
         usr.setPassword(hash);
-        usr.setRole("USER");
+//        usr.setRole("CUSTOMER");
         authRepository.save(usr);
     }
 }

@@ -46,9 +46,11 @@ public class SpringConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/register").permitAll()
-                .requestMatchers("/api/v1/auth/admin").hasAuthority("ADMIN")
-                .requestMatchers("/api/v1/auth/user").hasAuthority("USER")
-                .requestMatchers("/api/v1/auth/login").hasAuthority("USER")
+                //admin access
+                .requestMatchers("/api/v1/auth/admin","/api/v1/product/add","/api/v1/product/delete","/api/v1/product/update","/api/v1/order/status","/api/v1/order/get-all").hasAuthority("ADMIN")
+                //user access
+                .requestMatchers("/api/v1/auth/user","/api/v1/order/get","/api/v1/order/add","/api/v1/order/update","/api/v1/order/delete","/api/v1/product/get").hasAuthority("CUSTOMER")
+                .requestMatchers("/api/v1/auth/login").hasAnyAuthority("CUSTOMER","ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/api/v1/auth/logout")
